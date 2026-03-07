@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import demoPhoto from '../assets/6ee1ef9d2677e06049fb899a7658f4b9ac9c11dc.jpg';
 import tickIcon from '../assets/icons/tick.png';
 import tickProfileIcon from '../assets/icons/tick-profile.png';
@@ -20,8 +21,8 @@ const PremiumPopup = ({ type, onClose }) => {
             { id: 'right', count: '5', label: 'Comments', price: '399.00' },
         ]
         : [
-            { id: 'left', count: '1', label: 'Boost', price: '149.00' },
-            { id: 'right', count: '5', label: 'Boosts', price: '499.00' },
+            { id: 'left', count: '1', label: 'Boost', price: '199.00' },
+            { id: 'right', count: '5', label: 'Boosts', price: '399.00' },
         ];
 
     return (
@@ -63,21 +64,21 @@ const PremiumPopup = ({ type, onClose }) => {
 
                 {/* Content */}
                 <div className="flex flex-col items-center">
-                    {/* Icon circle - Figma: 50.31×49.5, bg #F0D3FF op 0.3, radius 32px */}
+                    {/* Icon circle - Figma: 45.4×45.4, radius 32px */}
                     <div
                         className="flex items-center justify-center"
                         style={{
-                            width: '50.31px',
-                            height: '49.5px',
-                            background: isComments ? 'rgba(240, 211, 255, 0.3)' : 'rgba(255, 221, 216, 0.3)',
+                            width: '45.4px',
+                            height: '45.4px',
+                            background: isComments ? '#F0D3FF' : '#FFDDD8',
+                            opacity: 0.5,
                             borderRadius: '32px',
                         }}
                     >
-                        {/* Icon - Figma: ~37×37 */}
                         <img
                             src={isComments ? textIcon : thumbIcon}
                             alt={type}
-                            className="w-[37px] h-[37px] object-contain"
+                            className="w-[34px] h-[34px] object-contain"
                         />
                     </div>
 
@@ -109,12 +110,12 @@ const PremiumPopup = ({ type, onClose }) => {
                             opacity: 0.5,
                             textAlign: 'center',
                             marginTop: '6px',
-                            maxWidth: '233px',
+                            maxWidth: '339px',
                         }}
                     >
                         {isComments
                             ? 'Sending Comments are the best way to express yourself on Amoro'
-                            : 'Boost your profile to get more visibility and matches on Amoro'}
+                            : 'Boost makes your profile 20x more visible for 3 days. More than 80% people get matched quickly.'}
                     </p>
 
                     {/* Pricing Cards */}
@@ -205,7 +206,7 @@ const PremiumPopup = ({ type, onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Continue
+                        {isComments ? 'Get Comments Now' : 'Get Boost Now'}
                     </button>
                 </div>
             </div>
@@ -216,6 +217,7 @@ const PremiumPopup = ({ type, onClose }) => {
 /* ─── Main Profile Page ─── */
 const ProfilePreviewPage = () => {
     const [popup, setPopup] = useState(null); // 'comments' | 'boost' | null
+    const navigate = useNavigate();
 
     return (
         <div
@@ -277,6 +279,7 @@ const ProfilePreviewPage = () => {
 
                         {/* Pencil icon - Figma: 30.51px circle, bg #6F3BCE */}
                         <button
+                            onClick={() => navigate('/edit-profile')}
                             className="absolute flex items-center justify-center"
                             style={{
                                 width: '30.51px',
@@ -286,6 +289,7 @@ const ProfilePreviewPage = () => {
                                 background: '#6F3BCE',
                                 borderRadius: '22.31px',
                                 border: 'none',
+                                cursor: 'pointer',
                             }}
                         >
                             <img src={pencilIcon} alt="edit" className="w-[18.85px] h-[18.85px] object-contain" />
@@ -345,6 +349,7 @@ const ProfilePreviewPage = () => {
                     <div className="w-full flex items-center gap-3 mt-5">
                         <div className="flex-1 h-[1px] bg-black/10" />
                         <button
+                            onClick={() => navigate('/premium')}
                             className="flex items-center gap-1.5 shrink-0"
                             style={{
                                 height: '35.79px',
@@ -574,6 +579,7 @@ const ProfilePreviewPage = () => {
 
                             {/* Upgrade button - Figma: 240.14×46.69, bg #FFF, shadow, radius 80px */}
                             <button
+                                onClick={() => navigate('/premium')}
                                 className="active:scale-[0.97] transition-transform"
                                 style={{
                                     width: '240.14px',

@@ -13,6 +13,8 @@ import RelationshipGoalsPage from '../pages/RelationshipGoalsPage';
 import ProfilePreviewPage from '../pages/ProfilePreviewPage';
 import DiscoveryPage from '../pages/DiscoveryPage';
 import ProfileDetailPage from '../pages/ProfileDetailPage';
+import EditProfilePage from '../pages/EditProfilePage';
+import PremiumPage from '../pages/PremiumPage';
 
 const AppRoutes = () => {
     return (
@@ -31,6 +33,8 @@ const AppRoutes = () => {
             <Route path="/profile-preview" element={<ProfilePreviewPage />} />
             <Route path="/discovery" element={<DiscoveryPage />} />
             <Route path="/profile-detail" element={<ProfileDetailPage />} />
+            <Route path="/edit-profile" element={<EditProfilePage />} />
+            <Route path="/premium" element={<PremiumPage />} />
         </Routes>
     );
 };
