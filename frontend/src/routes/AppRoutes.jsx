@@ -27,6 +27,7 @@ const AppRoutes = () => {
             <Route path="/enable-location" element={<EnableLocationPage />} />
             <Route path="/interests" element={<InterestsPage />} />
             <Route path="/relationship-goals" element={<RelationshipGoalsPage />} />
+            <Route path="/profile" element={<ProfilePreviewPage />} />
             <Route path="/profile-preview" element={<ProfilePreviewPage />} />
             <Route path="/discovery" element={<DiscoveryPage />} />
             <Route path="/profile-detail" element={<ProfileDetailPage />} />

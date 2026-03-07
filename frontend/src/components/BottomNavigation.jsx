@@ -36,7 +36,7 @@ const BottomNavigation = ({ activeTab = 'people' }) => {
                 name="Profile"
                 icon={profileIcon}
                 isActive={activeTab === 'profile'}
-                onClick={() => navigate('/profile-preview')}
+                onClick={() => navigate('/profile')}
             />
             <NavItem
                 name="People"
