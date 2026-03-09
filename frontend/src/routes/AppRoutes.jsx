@@ -15,6 +15,13 @@ import DiscoveryPage from '../pages/DiscoveryPage';
 import ProfileDetailPage from '../pages/ProfileDetailPage';
 import EditProfilePage from '../pages/EditProfilePage';
 import PremiumPage from '../pages/PremiumPage';
+import ChatListPage from '../pages/ChatListPage';
+import ChatScreenPage from '../pages/ChatScreenPage';
+import LikesYouPage from '../pages/LikesYouPage';
+import SettingsPage from '../pages/SettingsPage';
+import MeasurementUnitsPage from '../pages/MeasurementUnitsPage';
+import PrivacyPolicyPage from '../pages/PrivacyPolicyPage';
+import TermsOfServicePage from '../pages/TermsOfServicePage';
 
 const AppRoutes = () => {
     return (
@@ -35,6 +42,13 @@ const AppRoutes = () => {
             <Route path="/profile-detail" element={<ProfileDetailPage />} />
             <Route path="/edit-profile" element={<EditProfilePage />} />
             <Route path="/premium" element={<PremiumPage />} />
+            <Route path="/chats" element={<ChatListPage />} />
+            <Route path="/chat" element={<ChatScreenPage />} />
+            <Route path="/likes" element={<LikesYouPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/measurement-units" element={<MeasurementUnitsPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
         </Routes>
     );
 };

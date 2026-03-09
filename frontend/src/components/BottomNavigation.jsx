@@ -45,16 +45,16 @@ const BottomNavigation = ({ activeTab = 'people' }) => {
                 onClick={() => navigate('/discovery')}
             />
             <NavItem
-                name="Liked"
+                name="Likes"
                 icon={heartIcon}
-                isActive={activeTab === 'liked'}
-                onClick={() => { }}
+                isActive={activeTab === 'likes'}
+                onClick={() => navigate('/likes')}
             />
             <NavItem
                 name="Chats"
                 icon={messageIcon}
                 isActive={activeTab === 'chats'}
-                onClick={() => { }}
+                onClick={() => navigate('/chats')}
             />
         </div>
     );
