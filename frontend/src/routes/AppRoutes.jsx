@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import SplashScreen from '../pages/SplashScreen';
 import LoginScreen from '../pages/LoginScreen';
 import PhoneInputPage from '../pages/PhoneInputPage';
@@ -22,6 +22,10 @@ import SettingsPage from '../pages/SettingsPage';
 import MeasurementUnitsPage from '../pages/MeasurementUnitsPage';
 import PrivacyPolicyPage from '../pages/PrivacyPolicyPage';
 import TermsOfServicePage from '../pages/TermsOfServicePage';
+
+// Admin Components
+import AdminLayout from '../modules/admin/components/AdminLayout';
+import DashboardPage from '../modules/admin/pages/DashboardPage';
 
 const AppRoutes = () => {
     return (
@@ -49,6 +53,16 @@ const AppRoutes = () => {
             <Route path="/measurement-units" element={<MeasurementUnitsPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="dashboard" element={<DashboardPage />} />
+                <Route path="users" element={<div className="p-4">Users Component (Coming Soon)</div>} />
+                <Route path="moderation" element={<div className="p-4">Moderation Component (Coming Soon)</div>} />
+                <Route path="subscriptions" element={<div className="p-4">Subscriptions Component (Coming Soon)</div>} />
+                <Route path="settings" element={<div className="p-4">Settings Component (Coming Soon)</div>} />
+            </Route>
         </Routes>
     );
 };
