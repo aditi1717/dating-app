@@ -5,6 +5,7 @@ import {
     Users,
     ShieldAlert,
     CreditCard,
+    Clock3,
     Settings,
     LogOut,
     Heart
@@ -18,6 +19,7 @@ const AdminSidebar = () => {
         { icon: Users, label: 'Users', path: '/admin/users' },
         { icon: ShieldAlert, label: 'Moderation', path: '/admin/moderation' },
         { icon: CreditCard, label: 'Subscriptions', path: '/admin/subscriptions' },
+        { icon: Clock3, label: 'Queue Management', path: '/admin/queue-management' },
         { icon: Settings, label: 'Settings', path: '/admin/settings' },
     ];
 

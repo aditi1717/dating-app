@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BottomNavigation from '../components/BottomNavigation';
+import { loadAdminQueueSettings } from '../../../lib/adminQueue';
 
 import demoPhoto from '../assets/6ee1ef9d2677e06049fb899a7658f4b9ac9c11dc.jpg';
 import demoPhoto2 from '../assets/853e31e910922fe7f47f66de5c5206f78a610037.jpg';
@@ -299,6 +300,8 @@ const LikeCard = ({ person }) => (
 const LikesYouPage = () => {
     const navigate = useNavigate();
     const [showFilter, setShowFilter] = useState(false);
+    const queueSettings = loadAdminQueueSettings();
+    const likesAreQueued = queueSettings.holdLikesQueue;
 
     return (
         <div className="h-[100dvh] flex flex-col max-w-[414px] mx-auto overflow-hidden" style={{ background: '#FCFCFC' }}>
@@ -346,18 +349,80 @@ const LikesYouPage = () => {
                     <h2 style={{
                         fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: '18px',
                         lineHeight: '22px', color: '#000', opacity: 0.8
-                    }}>12 people like you</h2>
+                    }}>
+                        {likesAreQueued ? 'Your likes are in queue' : '12 people like you'}
+                    </h2>
                 </div>
 
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(2, 1fr)',
-                    gap: '12px',
-                }}>
-                    {likesData.map(person => (
-                        <LikeCard key={person.id} person={person} />
-                    ))}
-                </div>
+                {likesAreQueued ? (
+                    <div style={{
+                        background: 'linear-gradient(180deg, #FFF1F7 0%, #FFFFFF 100%)',
+                        border: '1px solid #F6D6E5',
+                        borderRadius: '28px',
+                        padding: '28px 22px',
+                        boxShadow: '0 14px 28px rgba(255, 77, 148, 0.08)',
+                    }}>
+                        <div style={{
+                            width: '58px',
+                            height: '58px',
+                            borderRadius: '18px',
+                            background: 'linear-gradient(135deg, #FF4B91 0%, #9B27FF 100%)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginBottom: '18px',
+                            color: '#FFFFFF',
+                            fontSize: '26px',
+                            fontWeight: 700,
+                        }}>
+                            Q
+                        </div>
+                        <h3 style={{
+                            fontFamily: "'Inter', sans-serif",
+                            fontWeight: 700,
+                            fontSize: '20px',
+                            lineHeight: '26px',
+                            color: '#1f1633',
+                            marginBottom: '10px',
+                        }}>
+                            Likes visibility is paused
+                        </h3>
+                        <p style={{
+                            fontFamily: "'Inter', sans-serif",
+                            fontWeight: 400,
+                            fontSize: '14px',
+                            lineHeight: '22px',
+                            color: '#7f5a73',
+                            marginBottom: '16px',
+                        }}>
+                            The admin has kept new users in queue mode. You can keep using the app, but who liked you will stay hidden until the queue is turned off.
+                        </p>
+                        <div style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            borderRadius: '999px',
+                            background: '#FFE5F1',
+                            color: '#D81B60',
+                            padding: '10px 14px',
+                            fontFamily: "'Inter', sans-serif",
+                            fontWeight: 600,
+                            fontSize: '13px',
+                        }}>
+                            Queue mode is active
+                        </div>
+                    </div>
+                ) : (
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(2, 1fr)',
+                        gap: '12px',
+                    }}>
+                        {likesData.map(person => (
+                            <LikeCard key={person.id} person={person} />
+                        ))}
+                    </div>
+                )}
             </main>
 
             <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, display: 'flex', justifyContent: 'center', pointerEvents: 'none', zIndex: 100 }}>

@@ -25,6 +25,8 @@ import TermsOfServicePage from '../pages/TermsOfServicePage';
 import AdminLoginPage from '../../admin/pages/AdminLoginPage';
 import AdminLayout from '../../admin/components/AdminLayout';
 import DashboardPage from '../../admin/pages/DashboardPage';
+import SubscriptionsPage from '../../admin/pages/SubscriptionsPage';
+import QueueManagementPage from '../../admin/pages/QueueManagementPage';
 
 const AppRoutes = () => {
     return (
@@ -60,7 +62,8 @@ const AppRoutes = () => {
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="users" element={<div className="p-4">Users Component (Coming Soon)</div>} />
                 <Route path="moderation" element={<div className="p-4">Moderation Component (Coming Soon)</div>} />
-                <Route path="subscriptions" element={<div className="p-4">Subscriptions Component (Coming Soon)</div>} />
+                <Route path="subscriptions" element={<SubscriptionsPage />} />
+                <Route path="queue-management" element={<QueueManagementPage />} />
                 <Route path="settings" element={<div className="p-4">Settings Component (Coming Soon)</div>} />
             </Route>
         </Routes>
