@@ -1,16 +1,23 @@
-# React + Vite
+# Amora Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Environment
 
-Currently, two official plugins are available:
+Create `frontend/.env` with:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```env
+VITE_API_URL=http://localhost:5000/api
+```
 
-## React Compiler
+The frontend now uses `VITE_API_URL` as the single source of truth for backend API requests.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Shared API Helper
 
-## Expanding the ESLint configuration
+Use [`src/lib/api.js`](./src/lib/api.js) for all frontend API calls:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```js
+import { apiFetch, buildApiUrl, API_BASE_URL } from './lib/api';
+```
+
+- `API_BASE_URL` returns the normalized value from `VITE_API_URL`
+- `buildApiUrl('auth/login')` builds a full request URL
+- `apiFetch('auth/login', { method: 'POST', body: JSON.stringify(data) })` uses the shared base URL automatically

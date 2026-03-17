@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { API_BASE_URL } from '../lib/api';
 
 const AuthContext = createContext();
 
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, signup, loading }}>
+        <AuthContext.Provider value={{ user, login, logout, signup, loading, apiBaseUrl: API_BASE_URL }}>
             {!loading && children}
         </AuthContext.Provider>
     );
