@@ -24,8 +24,11 @@ import PrivacyPolicyPage from '../pages/PrivacyPolicyPage';
 import TermsOfServicePage from '../pages/TermsOfServicePage';
 
 // Admin Components
+import AdminLoginPage from '../modules/admin/pages/AdminLoginPage';
 import AdminLayout from '../modules/admin/components/AdminLayout';
 import DashboardPage from '../modules/admin/pages/DashboardPage';
+import ModerationPage from '../modules/admin/pages/ModerationPage';
+import UsersPage from '../modules/admin/pages/UsersPage';
 import SubscriptionsPage from '../modules/admin/pages/SubscriptionsPage';
 import QueueManagementPage from '../modules/admin/pages/QueueManagementPage';
 
@@ -55,13 +58,14 @@ const AppRoutes = () => {
             <Route path="/measurement-units" element={<MeasurementUnitsPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+            <Route path="/admin/login" element={<AdminLoginPage />} />
 
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="dashboard" element={<DashboardPage />} />
-                <Route path="users" element={<div className="p-4">Users Component (Coming Soon)</div>} />
-                <Route path="moderation" element={<div className="p-4">Moderation Component (Coming Soon)</div>} />
+                <Route path="users" element={<UsersPage />} />
+                <Route path="moderation" element={<ModerationPage />} />
                 <Route path="subscriptions" element={<SubscriptionsPage />} />
                 <Route path="queue-management" element={<QueueManagementPage />} />
                 <Route path="settings" element={<div className="p-4">Settings Component (Coming Soon)</div>} />

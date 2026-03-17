@@ -8,6 +8,8 @@ import { validateEmail, validatePhoneNumber, validatePassword } from '../utils/v
 // @access Public
 export const register = asyncHandler(async (req, res, next) => {
   const { firstName, lastName, email, phoneNumber, password, gender, age } = req.body;
+  const normalizedEmail = email?.trim().toLowerCase();
+  const normalizedPhoneNumber = phoneNumber?.trim();
 
   // Validate input
   if (!firstName || !lastName || !email || !phoneNumber || !password || !gender) {
@@ -39,9 +41,18 @@ export const register = asyncHandler(async (req, res, next) => {
   }
 
   // Check if user already exists
-  let user = await User.findOne({ $or: [{ email }, { phoneNumber }] });
+  let user = await User.findOne({
+    $or: [{ email: normalizedEmail }, { phoneNumber: normalizedPhoneNumber }],
+  });
 
   if (user) {
+    if (user.isBanned) {
+      return res.status(403).json({
+        success: false,
+        message: user.banReason || 'This email or phone number has been banned',
+      });
+    }
+
     return res.status(400).json({
       success: false,
       message: 'User already exists with that email or phone number',
@@ -52,8 +63,8 @@ export const register = asyncHandler(async (req, res, next) => {
   user = await User.create({
     firstName,
     lastName,
-    email,
-    phoneNumber,
+    email: normalizedEmail,
+    phoneNumber: normalizedPhoneNumber,
     password,
     gender,
     age,
@@ -86,6 +97,7 @@ export const register = asyncHandler(async (req, res, next) => {
 // @access Public
 export const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
+  const normalizedEmail = email?.trim().toLowerCase();
 
   // Validate input
   if (!email || !password) {
@@ -96,12 +108,19 @@ export const login = asyncHandler(async (req, res, next) => {
   }
 
   // Check for user
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email: normalizedEmail }).select('+password');
 
   if (!user) {
     return res.status(401).json({
       success: false,
       message: 'Invalid credentials',
+    });
+  }
+
+  if (user.isBanned) {
+    return res.status(403).json({
+      success: false,
+      message: user.banReason || 'Your account has been banned by admin',
     });
   }
 
@@ -200,6 +219,13 @@ export const refreshAccessToken = asyncHandler(async (req, res, next) => {
 // @access Private
 export const getCurrentUser = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
+
+  if (!user || user.isBanned) {
+    return res.status(403).json({
+      success: false,
+      message: 'Your account is not allowed to access this app',
+    });
+  }
 
   res.status(200).json({
     success: true,

@@ -172,6 +172,7 @@ export const getDiscoveryFeed = asyncHandler(async (req, res, next) => {
   // Build query to find matching profiles
   const query = {
     _id: { $ne: req.user.id },
+    isBanned: false,
     $nor: [{ _id: { $in: currentUser.blockedUsers } }],
     interestedIn: currentUser.gender,
   };

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_SEED } from '../constants/adminSeed';
+import { apiFetch } from '../../../lib/api';
+
+const ADMIN_TOKEN_KEY = 'amora_admin_token';
 
 const cardStyle = {
   width: '100%',
@@ -40,7 +43,7 @@ function AdminLoginPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
     setSuccess('');
@@ -53,13 +56,57 @@ function AdminLoginPage() {
       return;
     }
 
-    if (normalizedEmail === ADMIN_SEED.email.toLowerCase() && normalizedPassword === ADMIN_SEED.password) {
+    try {
+      let response = await apiFetch('admin/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: normalizedEmail,
+          password: normalizedPassword,
+        }),
+      });
+
+      let data = await response.json();
+
+      if (!response.ok && normalizedEmail === ADMIN_SEED.email.toLowerCase() && normalizedPassword === ADMIN_SEED.password) {
+        const username = normalizedEmail.split('@')[0];
+
+        const registerResponse = await apiFetch('admin/register', {
+          method: 'POST',
+          body: JSON.stringify({
+            username,
+            email: normalizedEmail,
+            password: normalizedPassword,
+            firstName: 'Amora',
+            lastName: 'Admin',
+          }),
+        });
+
+        if (registerResponse.ok) {
+          response = await apiFetch('admin/login', {
+            method: 'POST',
+            body: JSON.stringify({
+              email: normalizedEmail,
+              password: normalizedPassword,
+            }),
+          });
+
+          data = await response.json();
+        }
+      }
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Invalid admin credentials.');
+      }
+
+      if (data.token) {
+        localStorage.setItem(ADMIN_TOKEN_KEY, data.token);
+      }
+
       setSuccess('Admin login successful.');
       navigate('/admin', { replace: true });
-      return;
+    } catch (submitError) {
+      setError(submitError.message || 'Invalid admin credentials.');
     }
-
-    setError('Invalid admin credentials.');
   };
 
   return (
