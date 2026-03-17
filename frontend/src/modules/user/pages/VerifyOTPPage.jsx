@@ -1,16 +1,48 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+const STATIC_OTP = '1234';
 
 const VerifyOTPPage = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [otp, setOtp] = useState(['', '', '', '']);
+    const [error, setError] = useState('');
     const inputRefs = [useRef(), useRef(), useRef(), useRef()];
+    const savedPhone = JSON.parse(localStorage.getItem('onboarding_phone') || '{}');
+
+    const handleSubmit = () => {
+        const enteredOtp = otp.join('');
+
+        if (!savedPhone?.isStaticLogin || savedPhone?.phone !== '7223077890') {
+            setError('Start again with the demo phone number.');
+            navigate('/phone-input');
+            return;
+        }
+
+        if (enteredOtp !== STATIC_OTP) {
+            setError('Use OTP 1234 to continue.');
+            return;
+        }
+
+        login({
+            id: 'demo-user',
+            phone: savedPhone.phone,
+            countryCode: savedPhone.countryCode || '+91',
+            authType: 'static-otp',
+        });
+
+        setError('');
+        navigate('/profile-details');
+    };
 
     const handleChange = (index, value) => {
         if (isNaN(value)) return;
         const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
+        setError('');
 
         // Auto focus next input
         if (value !== '' && index < 3) {
@@ -38,6 +70,10 @@ const VerifyOTPPage = () => {
                 sent to your number
             </p>
 
+            <div className="w-full max-w-[280px] rounded-3xl bg-[#F7F1FF] border border-[#E9DDFE] px-4 py-3 text-center text-[14px] text-[#5A2DB9] mb-8">
+                Demo OTP: <span className="font-bold">{STATIC_OTP}</span>
+            </div>
+
             {/* OTP Input Group */}
             <div className="flex space-x-4 mb-10">
                 {otp.map((digit, index) => (
@@ -54,9 +90,15 @@ const VerifyOTPPage = () => {
                 ))}
             </div>
 
+            {error && (
+                <p className="text-[13px] text-red-500 mb-5 text-center">
+                    {error}
+                </p>
+            )}
+
             {/* Submit Button */}
             <button
-                onClick={() => navigate('/profile-details')}
+                onClick={handleSubmit}
                 className="w-[200px] bg-[#733FE0] text-white font-medium h-[54px] rounded-[27px] text-[16px] shadow-lg shadow-purple-100 active:scale-[0.98] transition-all mb-6"
             >
                 Submit

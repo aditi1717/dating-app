@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const STATIC_LOGIN_PHONE = '7223077890';
+
 const countries = [
     { code: '+91', flag: 'https://flagcdn.com/w40/in.png', name: 'India' },
     { code: '+1', flag: 'https://flagcdn.com/w40/us.png', name: 'USA' },
@@ -18,12 +20,24 @@ const PhoneInputPage = () => {
     const [phone, setPhone] = useState('');
     const [showPicker, setShowPicker] = useState(false);
     const [countryCode, setCountryCode] = useState('+91');
+    const [error, setError] = useState('');
 
     const selectedCountry = countries.find(c => c.code === countryCode) || countries[0];
 
     const handleContinue = () => {
+        if (countryCode !== '+91' || phone !== STATIC_LOGIN_PHONE) {
+            setError('Use +91 7223077890 to continue.');
+            return;
+        }
+
         // Save to LocalStorage
-        localStorage.setItem('onboarding_phone', JSON.stringify({ countryCode, phone }));
+        localStorage.setItem('onboarding_phone', JSON.stringify({
+            countryCode,
+            phone,
+            otp: '1234',
+            isStaticLogin: true,
+        }));
+        setError('');
         navigate('/verify');
     };
 
@@ -44,6 +58,10 @@ const PhoneInputPage = () => {
                     Please enter your valid phone number.<br />
                     We will send you a 4-digit code to verify
                 </p>
+
+                <div className="w-full rounded-3xl bg-[#F7F1FF] border border-[#E9DDFE] px-4 py-3 text-center text-[14px] text-[#5A2DB9] mb-6">
+                    Static login for demo: <span className="font-bold">7223077890</span>
+                </div>
 
                 {/* Input Container */}
                 <div
@@ -101,12 +119,19 @@ const PhoneInputPage = () => {
                         value={phone}
                         onChange={(e) => {
                             const val = e.target.value.replace(/\D/g, '');
+                            setError('');
                             if (val.length <= 10) setPhone(val);
                         }}
                         className="flex-1 bg-transparent border-none outline-none text-[16px] font-medium text-black tracking-wide w-full"
                         placeholder="Phone number"
                     />
                 </div>
+
+                {error && (
+                    <p className="w-full text-left text-[13px] text-red-500 mt-3 px-2">
+                        {error}
+                    </p>
+                )}
             </div>
 
             {/* Continue Button - Fixed at bottom */}
