@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Ban, ChevronLeft, ChevronRight, ImageIcon, Mail, Phone, Search, ShieldCheck } from 'lucide-react';
+import { Ban, ChevronLeft, ChevronRight, ImageIcon, Mail, Phone, Search, ShieldCheck, Users, FileText, Layers } from 'lucide-react';
 import { apiFetch } from '../../../lib/api';
 
 const ADMIN_TOKEN_KEY = 'amora_admin_token';
@@ -99,99 +99,118 @@ const ModerationPage = () => {
         <div className="space-y-6">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-[#1d1533] tracking-tight">Moderation</h1>
-                    <p className="text-sm text-[#7f5a73] mt-1">
-                        Review users, inspect uploaded images, and ban or unban accounts by email and phone.
+                    <h1 className="text-2xl font-medium text-zinc-900 tracking-tight">Moderation Control</h1>
+                    <p className="text-sm text-zinc-500 mt-1">
+                        Review user content, inspect imagery, and manage active bans.
                     </p>
                 </div>
 
-                <form onSubmit={submitSearch} className="w-full xl:w-[360px]">
+                <form onSubmit={submitSearch} className="w-full xl:w-[320px]">
                     <div className="relative">
-                        <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-[#c5769b]" />
+                        <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                         <input
                             type="text"
                             value={searchInput}
                             onChange={(event) => setSearchInput(event.target.value)}
                             placeholder="Search by name, email, or phone"
-                            className="w-full rounded-2xl border border-[#f2bfd4] bg-white/80 pl-10 pr-4 py-3 text-[#4d2740] outline-none focus:border-[#ff4d94] focus:ring-2 focus:ring-[#ff4d94]/20"
+                            className="w-full rounded-xl border border-zinc-300 bg-white pl-10 pr-4 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-black focus:ring-1 focus:ring-black transition-all shadow-sm"
                         />
                     </div>
                 </form>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="rounded-[24px] bg-white/82 backdrop-blur-xl border border-white/70 shadow-[0_18px_45px_rgba(255,77,148,0.12)] px-5 py-4">
-                    <p className="text-xs uppercase tracking-[0.24em] text-[#b17a94]">Total Users</p>
-                    <p className="text-2xl font-bold text-[#25183d] mt-2">{pagination.totalUsers}</p>
+                <div className="bg-white rounded-xl shadow-sm border border-zinc-200 p-4 flex items-center hover:shadow-md transition-shadow">
+                    <div className="p-2.5 rounded-lg bg-blue-50 ring-1 ring-blue-100/50 flex items-center justify-center mr-3.5">
+                        <Users className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div>
+                        <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Total Users</p>
+                        <h3 className="text-xl font-medium text-zinc-900 tracking-tight leading-none">{pagination.totalUsers}</h3>
+                    </div>
                 </div>
-                <div className="rounded-[24px] bg-white/82 backdrop-blur-xl border border-white/70 shadow-[0_18px_45px_rgba(255,77,148,0.12)] px-5 py-4">
-                    <p className="text-xs uppercase tracking-[0.24em] text-[#b17a94]">Current Page</p>
-                    <p className="text-2xl font-bold text-[#25183d] mt-2">{pagination.page}</p>
+                <div className="bg-white rounded-xl shadow-sm border border-zinc-200 p-4 flex items-center hover:shadow-md transition-shadow">
+                    <div className="p-2.5 rounded-lg bg-emerald-50 ring-1 ring-emerald-100/50 flex items-center justify-center mr-3.5">
+                        <Layers className="w-5 h-5 text-emerald-600" />
+                    </div>
+                    <div>
+                        <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Current Page</p>
+                        <h3 className="text-xl font-medium text-zinc-900 tracking-tight leading-none">{pagination.page}</h3>
+                    </div>
                 </div>
-                <div className="rounded-[24px] bg-white/82 backdrop-blur-xl border border-white/70 shadow-[0_18px_45px_rgba(255,77,148,0.12)] px-5 py-4">
-                    <p className="text-xs uppercase tracking-[0.24em] text-[#b17a94]">Pages</p>
-                    <p className="text-2xl font-bold text-[#25183d] mt-2">{pagination.totalPages}</p>
+                <div className="bg-white rounded-xl shadow-sm border border-zinc-200 p-4 flex items-center hover:shadow-md transition-shadow">
+                    <div className="p-2.5 rounded-lg bg-indigo-50 ring-1 ring-indigo-100/50 flex items-center justify-center mr-3.5">
+                        <FileText className="w-5 h-5 text-indigo-600" />
+                    </div>
+                    <div>
+                        <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Total Pages</p>
+                        <h3 className="text-xl font-medium text-zinc-900 tracking-tight leading-none">{pagination.totalPages}</h3>
+                    </div>
                 </div>
             </div>
 
             {(error || actionMessage) && (
-                <div className={`rounded-[24px] px-5 py-4 border ${error ? 'bg-[#fff1f1] border-[#ffd2d2] text-[#b42318]' : 'bg-[#fff1f7] border-[#f6d6e5] text-[#c33573]'}`}>
+                <div className={`rounded-xl px-4 py-3 border text-sm font-medium ${error ? 'bg-red-50 border-red-200 text-red-600' : 'bg-green-50 border-green-200 text-green-600'}`}>
                     {error || actionMessage}
                 </div>
             )}
 
-            <section className="rounded-[30px] bg-white/82 backdrop-blur-xl border border-white/70 shadow-[0_18px_45px_rgba(255,77,148,0.12)] p-6">
+            <div className="space-y-4">
                 {loading ? (
-                    <div className="text-[#8f6a80]">Loading users...</div>
+                    <div className="rounded-2xl bg-white border border-zinc-200 p-8 text-center text-sm font-medium text-zinc-500 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                        Loading users...
+                    </div>
                 ) : users.length === 0 ? (
-                    <div className="text-[#8f6a80]">No users found for this page.</div>
+                    <div className="rounded-2xl bg-white border border-zinc-200 p-8 text-center text-sm font-medium text-zinc-500 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                        No users found for this page.
+                    </div>
                 ) : (
-                    <div className="space-y-5">
+                    <div className="grid gap-4">
                         {users.map((user) => {
                             const allImages = [user.profilePicture, ...(user.galleryImages || []).map((image) => image.url)].filter(Boolean);
 
                             return (
                                 <article
                                     key={user._id}
-                                    className="rounded-[28px] border border-[#f3dbe6] bg-[#fffafd] p-5 shadow-[0_8px_24px_rgba(255,77,148,0.08)]"
+                                    className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-shadow hover:shadow-md"
                                 >
-                                    <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-                                        <div className="flex-1 space-y-4">
+                                    <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
+                                        <div className="flex-1 space-y-5">
                                             <div className="flex items-start gap-4">
-                                                <div className="w-16 h-16 rounded-[20px] overflow-hidden bg-[linear-gradient(135deg,#f8ddf0_0%,#ead7ff_100%)] border border-[#ecc8da] flex items-center justify-center text-[#9b27ff] font-bold text-xl">
+                                                <div className="w-16 h-16 rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-500 font-bold text-xl shadow-sm">
                                                     {user.profilePicture ? (
-                                                        <img src={user.profilePicture} alt={`${user.firstName} ${user.lastName}`} className="w-full h-full object-cover" />
+                                                        <img src={user.profilePicture} alt="" className="w-full h-full object-cover" />
                                                     ) : (
                                                         `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`
                                                     )}
                                                 </div>
                                                 <div>
                                                     <div className="flex flex-wrap items-center gap-2">
-                                                        <h2 className="text-lg font-bold text-[#27193f]">
+                                                        <h2 className="text-lg font-bold text-zinc-900 leading-tight">
                                                             {user.firstName} {user.lastName}
                                                         </h2>
                                                         {user.isBanned ? (
-                                                            <span className="inline-flex items-center rounded-full bg-[#fff1f1] text-[#b42318] px-2.5 py-1 text-xs font-semibold">
+                                                            <span className="inline-flex items-center rounded-md bg-red-100/80 text-red-700 px-2.5 py-0.5 text-[11px] font-bold tracking-wide uppercase">
                                                                 Banned
                                                             </span>
                                                         ) : (
-                                                            <span className="inline-flex items-center rounded-full bg-[#e8fff0] text-[#149147] px-2.5 py-1 text-xs font-semibold">
+                                                            <span className="inline-flex items-center rounded-md bg-emerald-100/80 text-emerald-700 px-2.5 py-0.5 text-[11px] font-bold tracking-wide uppercase">
                                                                 Active
                                                             </span>
                                                         )}
                                                         {user.isPremium && (
-                                                            <span className="inline-flex items-center rounded-full bg-[#f2e2ff] text-[#8d2bff] px-2.5 py-1 text-xs font-semibold">
+                                                            <span className="inline-flex items-center rounded-md bg-amber-100/80 text-amber-800 px-2.5 py-0.5 text-[11px] font-bold tracking-wide uppercase">
                                                                 Premium
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <div className="mt-2 space-y-1 text-sm text-[#7f5a73]">
-                                                        <div className="flex items-center gap-2">
-                                                            <Mail className="w-4 h-4" />
+                                                    <div className="mt-2 flex flex-wrap gap-4 text-xs font-medium text-zinc-500">
+                                                        <div className="flex items-center gap-1.5">
+                                                            <Mail className="w-3.5 h-3.5 text-zinc-400" />
                                                             <span>{user.email}</span>
                                                         </div>
-                                                        <div className="flex items-center gap-2">
-                                                            <Phone className="w-4 h-4" />
+                                                        <div className="flex items-center gap-1.5">
+                                                            <Phone className="w-3.5 h-3.5 text-zinc-400" />
                                                             <span>{user.phoneNumber}</span>
                                                         </div>
                                                     </div>
@@ -199,41 +218,43 @@ const ModerationPage = () => {
                                             </div>
 
                                             {user.isBanned && (
-                                                <div className="rounded-2xl bg-[#fff3f2] border border-[#ffd9d5] px-4 py-3 text-sm text-[#9f2d1f]">
-                                                    <strong>Ban reason:</strong> {user.banReason || 'Banned by admin'}
+                                                <div className="rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">
+                                                    <span className="font-bold">Ban reason:</span> {user.banReason || 'Banned by admin panel'}
                                                 </div>
                                             )}
 
                                             <div>
-                                                <div className="flex items-center gap-2 text-sm font-semibold text-[#6f4760] mb-3">
+                                                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-500 mb-3">
                                                     <ImageIcon className="w-4 h-4" />
                                                     Uploaded Images ({allImages.length})
                                                 </div>
 
                                                 {allImages.length ? (
-                                                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
-                                                        {allImages.map((imageUrl) => (
+                                                    <div className="flex flex-wrap gap-3">
+                                                        {allImages.map((imageUrl, idx) => (
                                                             <button
-                                                                key={imageUrl}
+                                                                key={idx}
                                                                 type="button"
                                                                 onClick={() => setSelectedImage(imageUrl)}
-                                                                className="aspect-square rounded-[18px] overflow-hidden border border-[#f3dbe6] bg-[#fff1f6]"
+                                                                className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border border-zinc-200 bg-zinc-50 hover:opacity-80 transition-opacity shadow-sm"
                                                             >
                                                                 <img src={imageUrl} alt="User upload" className="w-full h-full object-cover" />
                                                             </button>
                                                         ))}
                                                     </div>
                                                 ) : (
-                                                    <div className="text-sm text-[#8f6a80]">No uploaded images yet.</div>
+                                                    <div className="text-sm font-medium text-zinc-400 border border-dashed border-zinc-200 rounded-xl p-4 inline-block bg-zinc-50">
+                                                        No uploaded images yet.
+                                                    </div>
                                                 )}
                                             </div>
                                         </div>
 
-                                        <div className="w-full xl:w-[280px] rounded-[24px] border border-[#f3dbe6] bg-white p-4 space-y-4">
+                                        <div className="w-full xl:w-[280px] shrink-0 rounded-xl border border-zinc-200 bg-zinc-50 p-4 space-y-4 shadow-sm">
                                             <div>
-                                                <h3 className="text-sm font-semibold text-[#6f4760]">Moderation Action</h3>
-                                                <p className="text-xs text-[#8f6a80] mt-1">
-                                                    Banning blocks this email and phone from logging in again.
+                                                <h3 className="text-sm font-bold text-zinc-900 border-b border-zinc-200 pb-2 mb-2">Moderation Action</h3>
+                                                <p className="text-xs text-zinc-500 font-medium leading-relaxed">
+                                                    Banning restricts this email and phone number from logging in.
                                                 </p>
                                             </div>
 
@@ -247,8 +268,8 @@ const ModerationPage = () => {
                                                         }))
                                                     }
                                                     rows="3"
-                                                    placeholder="Reason for ban"
-                                                    className="w-full rounded-2xl border border-[#f2bfd4] bg-[#fffafd] px-4 py-3 text-[#4d2740] outline-none focus:border-[#ff4d94] focus:ring-2 focus:ring-[#ff4d94]/20 resize-none"
+                                                    placeholder="Reason for ban (required if banning)..."
+                                                    className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-black focus:ring-1 focus:ring-black resize-none"
                                                 />
                                             )}
 
@@ -256,7 +277,7 @@ const ModerationPage = () => {
                                                 <button
                                                     type="button"
                                                     onClick={() => handleBanToggle(user, false)}
-                                                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-[#e8fff0] text-[#149147] font-semibold hover:brightness-95"
+                                                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-white border border-emerald-200 text-emerald-700 font-bold hover:bg-emerald-50 transition-colors shadow-sm text-sm"
                                                 >
                                                     <ShieldCheck className="w-4 h-4" />
                                                     Unban User
@@ -265,7 +286,7 @@ const ModerationPage = () => {
                                                 <button
                                                     type="button"
                                                     onClick={() => handleBanToggle(user, true)}
-                                                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-[#fff1f1] text-[#b42318] font-semibold hover:brightness-95"
+                                                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-red-600 text-white font-bold hover:bg-red-700 transition-colors shadow-sm text-sm"
                                                 >
                                                     <Ban className="w-4 h-4" />
                                                     Ban User
@@ -278,41 +299,49 @@ const ModerationPage = () => {
                         })}
                     </div>
                 )}
-            </section>
-
-            <div className="flex items-center justify-between rounded-[24px] bg-white/82 backdrop-blur-xl border border-white/70 shadow-[0_18px_45px_rgba(255,77,148,0.12)] px-5 py-4">
-                <button
-                    type="button"
-                    onClick={() => setPage((currentPage) => Math.max(currentPage - 1, 1))}
-                    disabled={page <= 1}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-[#fff1f6] text-[#b53674] disabled:opacity-50"
-                >
-                    <ChevronLeft className="w-4 h-4" />
-                    Previous
-                </button>
-
-                <div className="text-sm font-medium text-[#7f5a73]">
-                    Page {pagination.page} of {pagination.totalPages}
-                </div>
-
-                <button
-                    type="button"
-                    onClick={() => setPage((currentPage) => Math.min(currentPage + 1, pagination.totalPages))}
-                    disabled={page >= pagination.totalPages}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-[#fff1f6] text-[#b53674] disabled:opacity-50"
-                >
-                    Next
-                    <ChevronRight className="w-4 h-4" />
-                </button>
             </div>
+
+            {users.length > 0 && (
+                <div className="flex items-center justify-between rounded-xl bg-white shadow-sm border border-zinc-200 px-5 py-3.5">
+                    <button
+                        type="button"
+                        onClick={() => setPage((currentPage) => Math.max(currentPage - 1, 1))}
+                        disabled={page <= 1}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-zinc-200 bg-white text-zinc-700 text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-zinc-50 transition-colors shadow-sm"
+                    >
+                        <ChevronLeft className="w-4 h-4" />
+                        Previous
+                    </button>
+
+                    <div className="text-sm font-semibold text-zinc-600">
+                        Page {pagination.page} of {pagination.totalPages}
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => setPage((currentPage) => Math.min(currentPage + 1, pagination.totalPages))}
+                        disabled={page >= pagination.totalPages}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-zinc-200 bg-white text-zinc-700 text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-zinc-50 transition-colors shadow-sm"
+                    >
+                        Next
+                        <ChevronRight className="w-4 h-4" />
+                    </button>
+                </div>
+            )}
 
             {selectedImage && (
                 <div
-                    className="fixed inset-0 z-[150] bg-[rgba(35,14,33,0.72)] flex items-center justify-center p-6"
+                    className="fixed inset-0 z-[200] bg-zinc-900/80 backdrop-blur-sm flex items-center justify-center p-6"
                     onClick={() => setSelectedImage(null)}
                 >
-                    <div className="max-w-3xl w-full rounded-[28px] overflow-hidden border border-white/20 shadow-[0_25px_70px_rgba(0,0,0,0.28)]">
-                        <img src={selectedImage} alt="User upload preview" className="w-full max-h-[82vh] object-contain bg-black/30" />
+                    <div className="max-w-4xl w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
+                        <button 
+                            className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors border border-white/20"
+                            onClick={() => setSelectedImage(null)}
+                        >
+                            ✕
+                        </button>
+                        <img src={selectedImage} alt="User upload preview" className="w-full max-h-[85vh] object-contain bg-zinc-900" />
                     </div>
                 </div>
             )}
