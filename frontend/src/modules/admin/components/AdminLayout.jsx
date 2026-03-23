@@ -15,7 +15,7 @@ const AdminLayout = () => {
             <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-zinc-50 relative">
 
                 {/* Top Header */}
-                <header className="bg-zinc-900 border-b border-white/5 h-16 flex flex-shrink-0 items-center justify-between px-4 sm:px-6 lg:px-8 z-10">
+                <header className="bg-zinc-800 border-b border-white/5 h-16 flex flex-shrink-0 items-center justify-between px-4 sm:px-6 lg:px-8 z-10">
 
                     {/* Left part: Mobile Menu Toggle & Title */}
                     <div className="flex items-center flex-1">
@@ -34,7 +34,7 @@ const AdminLayout = () => {
                         <button className="p-2 text-zinc-400 hover:text-white relative rounded-full hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/20">
                             <span className="sr-only">View notifications</span>
                             <Bell className="w-5 h-5" />
-                            <span className="absolute top-1.5 right-1.5 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-zinc-900"></span>
+                            <span className="absolute top-1.5 right-1.5 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-zinc-800"></span>
                         </button>
 
                         <div className="relative">

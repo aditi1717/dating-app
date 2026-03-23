@@ -29,6 +29,11 @@ import ModerationPage from '../../admin/pages/ModerationPage';
 import UsersPage from '../../admin/pages/UsersPage';
 import SubscriptionsPage from '../../admin/pages/SubscriptionsPage';
 import QueueManagementPage from '../../admin/pages/QueueManagementPage';
+import TransactionsPage from '../../admin/pages/TransactionsPage';
+import ReportsPage from '../../admin/pages/ReportsPage';
+import NotificationsPage from '../../admin/pages/NotificationsPage';
+import AppConfigPage from '../../admin/pages/AppConfigPage';
+import AdminProfilePage from '../../admin/pages/AdminProfilePage';
 
 const AppRoutes = () => {
     return (
@@ -64,9 +69,14 @@ const AppRoutes = () => {
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="moderation" element={<ModerationPage />} />
+                <Route path="reports" element={<ReportsPage />} />
                 <Route path="subscriptions" element={<SubscriptionsPage />} />
                 <Route path="queue-management" element={<QueueManagementPage />} />
-                <Route path="settings" element={<div className="p-4">Settings Component (Coming Soon)</div>} />
+                <Route path="transactions" element={<TransactionsPage />} />
+                <Route path="notifications" element={<NotificationsPage />} />
+                <Route path="app-config" element={<AppConfigPage />} />
+                <Route path="profile" element={<AdminProfilePage />} />
+                <Route path="settings" element={<AdminProfilePage />} />
             </Route>
         </Routes>
     );
