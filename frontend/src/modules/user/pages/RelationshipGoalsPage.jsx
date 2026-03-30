@@ -4,12 +4,10 @@ import { useNavigate } from 'react-router-dom';
 const RelationshipGoalsPage = () => {
     const navigate = useNavigate();
     const [selected, setSelected] = useState(null);
+    const canContinue = Boolean(selected);
 
     const handleNext = () => {
-        if (!selected) {
-            alert("Please select a relationship goal");
-            return;
-        }
+        if (!canContinue) return;
         localStorage.setItem('onboarding_goals', selected);
         navigate('/discovery');
     };
@@ -73,7 +71,12 @@ const RelationshipGoalsPage = () => {
                 <div className="mt-auto w-full mb-6">
                     <button
                         onClick={handleNext}
-                        className="w-full bg-[#733FE0] text-white font-bold h-[58px] rounded-[30px] text-[16px] shadow-lg shadow-purple-100 active:scale-[0.98] transition-all"
+                        disabled={!canContinue}
+                        className={`w-full h-[58px] rounded-[30px] text-[16px] font-bold text-white shadow-lg transition-all ${
+                            canContinue
+                                ? 'bg-[#733FE0] shadow-purple-100 active:scale-[0.98]'
+                                : 'cursor-not-allowed bg-[#C4AFF0] shadow-none'
+                        }`}
                     >
                         Next
                     </button>

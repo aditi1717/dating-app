@@ -36,6 +36,8 @@ import ReportsPage from '../modules/admin/pages/ReportsPage';
 import NotificationsPage from '../modules/admin/pages/NotificationsPage';
 import AppConfigPage from '../modules/admin/pages/AppConfigPage';
 import AdminProfilePage from '../modules/admin/pages/AdminProfilePage';
+import AdminSettingsPage from '../modules/admin/pages/AdminSettingsPage';
+import WebsitePageEditorPage from '../modules/admin/pages/WebsitePageEditorPage';
 
 const AppRoutes = () => {
     return (
@@ -77,8 +79,9 @@ const AppRoutes = () => {
                 <Route path="transactions" element={<TransactionsPage />} />
                 <Route path="notifications" element={<NotificationsPage />} />
                 <Route path="app-config" element={<AppConfigPage />} />
+                <Route path="website-pages/:slug" element={<WebsitePageEditorPage />} />
                 <Route path="profile" element={<AdminProfilePage />} />
-                <Route path="settings" element={<AdminProfilePage />} />
+                <Route path="settings" element={<AdminSettingsPage />} />
             </Route>
         </Routes>
     );
