@@ -34,6 +34,8 @@ import ReportsPage from '../../admin/pages/ReportsPage';
 import NotificationsPage from '../../admin/pages/NotificationsPage';
 import AppConfigPage from '../../admin/pages/AppConfigPage';
 import AdminProfilePage from '../../admin/pages/AdminProfilePage';
+import AdminSettingsPage from '../../admin/pages/AdminSettingsPage';
+import WebsitePageEditorPage from '../../admin/pages/WebsitePageEditorPage';
 
 const AppRoutes = () => {
     return (
@@ -75,8 +77,9 @@ const AppRoutes = () => {
                 <Route path="transactions" element={<TransactionsPage />} />
                 <Route path="notifications" element={<NotificationsPage />} />
                 <Route path="app-config" element={<AppConfigPage />} />
+                <Route path="website-pages/:slug" element={<WebsitePageEditorPage />} />
                 <Route path="profile" element={<AdminProfilePage />} />
-                <Route path="settings" element={<AdminProfilePage />} />
+                <Route path="settings" element={<AdminSettingsPage />} />
             </Route>
         </Routes>
     );
