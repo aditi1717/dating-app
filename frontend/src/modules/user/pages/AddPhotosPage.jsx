@@ -1,15 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Importing a local asset for the demo "uploaded" photo - keeping this as default first photo for demo
 import demoPhoto from '../assets/6ee1ef9d2677e06049fb899a7658f4b9ac9c11dc.jpg';
 
 const AddPhotosPage = () => {
     const navigate = useNavigate();
-    // Default 5 slots + 1 already uploaded demo, total 6 visuals. 
-    // Grid handles 6 items? Screenshot showed 2 columns.
-    // Screenshot showed 1st item as Image, then next items as "Add" placeholders.
-    // Let's model state:
     const [photos, setPhotos] = useState([null, null, null, null, null, null]);
     const fileInputRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(null);
@@ -32,13 +27,20 @@ const AddPhotosPage = () => {
         }
     };
 
-    const handleContinue = () => {
-        // Filter out nulls if needed, or save all. 
-        // Screenshot said "Minimum 5 photos required".
-        const validPhotos = photos.filter(p => p !== null);
-        // For dev/demo, allowing fewer, but in real app would validate length.
+    const uploadedCount = photos.filter(p => p !== null).length;
+    const canContinue = uploadedCount >= 5;
 
-        localStorage.setItem('onboarding_photos', JSON.stringify(validPhotos));
+    const handleContinue = () => {
+        if (!canContinue) return;
+        const validPhotos = photos.filter(p => p !== null);
+
+        // Avoid storing large base64 image payloads in localStorage.
+        // This key is only used as onboarding progress metadata right now.
+        localStorage.setItem('onboarding_photos', JSON.stringify({
+            count: validPhotos.length,
+            hasPhotos: validPhotos.length > 0,
+            completedAt: Date.now(),
+        }));
         navigate('/enable-location');
     };
 
@@ -63,48 +65,66 @@ const AddPhotosPage = () => {
                     onChange={handleFileChange}
                 />
 
-                {/* Photos Grid */}
+                {/* Photos Grid — 6 boxes */}
                 <div className="grid grid-cols-2 gap-4 mb-12 w-full">
                     {photos.map((photo, idx) => (
                         <div
                             key={idx}
                             onClick={() => handlePhotoClick(idx)}
-                            className="w-full aspect-square rounded-[20px] overflow-hidden flex items-center justify-center relative cursor-pointer hover:opacity-90 transition-all shadow-sm"
-                            style={!photo ? {
-                                background: 'rgba(249, 253, 252, 0.7)', // #F9FDFCB2
-                                backdropFilter: 'blur(11px)',
-                                WebkitBackdropFilter: 'blur(11px)',
-                                border: '1px solid rgba(255, 255, 255, 0.4)'
-                            } : {}}
+                            className="relative flex aspect-square w-full cursor-pointer items-center justify-center overflow-hidden rounded-[20px] transition-all hover:opacity-90 shadow-sm"
                         >
                             {photo ? (
                                 <img
                                     src={photo}
                                     className="w-full h-full object-cover"
-                                    alt={`Slot ${idx}`}
+                                    alt={`Photo ${idx + 1}`}
                                 />
                             ) : (
-                                <div className="w-[38px] h-[38px] bg-[#733FE0] rounded-full flex items-center justify-center shadow-sm">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <line x1="12" y1="5" x2="12" y2="19" />
-                                        <line x1="5" y1="12" x2="19" y2="12" />
-                                    </svg>
-                                </div>
+                                <>
+                                    {/* Same blurred background for ALL empty slots */}
+                                    <img
+                                        src={demoPhoto}
+                                        className="absolute inset-0 h-full w-full object-cover scale-x-[-1]"
+                                        alt=""
+                                    />
+                                    <div className="absolute inset-0 rounded-[20px] bg-[rgba(249,253,252,0.7)] backdrop-blur-[5.5px]" />
+                                    {/* Plus icon */}
+                                    <div className="relative z-10 flex h-[49px] w-[49px] items-center justify-center rounded-full border-2 border-[#F6FBF3] bg-[#6F3BCE] shadow-sm">
+                                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" aria-hidden="true">
+                                            <path
+                                                d="M12.5 5.5V19.5M5.5 12.5H19.5"
+                                                stroke="#F5F5F5"
+                                                strokeWidth="2.5"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                </>
                             )}
                         </div>
                     ))}
                 </div>
             </div>
 
-            {/* Footer Actions */}
+            {/* Footer */}
             <div className="mt-auto w-full flex flex-col items-center">
                 <button
                     onClick={handleContinue}
-                    className="w-full bg-[#733FE0] text-white font-bold h-[58px] rounded-[30px] text-[16px] shadow-lg shadow-purple-100 active:scale-[0.98] transition-all mb-4"
+                    disabled={!canContinue}
+                    className={`w-full text-white font-bold h-[58px] rounded-[30px] text-[16px] shadow-lg active:scale-[0.98] transition-all mb-4 ${
+                        canContinue
+                            ? 'bg-[#733FE0] shadow-purple-100 hover:bg-[#6533c9]'
+                            : 'bg-[#C4AFF0] cursor-not-allowed'
+                    }`}
                 >
                     Continue
                 </button>
-                <p className="text-[13px] text-black font-medium">Add at least one photo</p>
+                <p className="text-[13px] text-black font-medium">
+                    {canContinue
+                        ? `${uploadedCount} photos added ✓`
+                        : `Minimum 5 photos required (${uploadedCount}/5 added)`
+                    }
+                </p>
             </div>
         </div>
     );
