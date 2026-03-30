@@ -176,12 +176,12 @@ const TransactionsPage = () => {
                     <div className="flex gap-2 ml-auto">
                         <button
                             onClick={resetFilters}
-                            className="px-4 py-2 rounded-lg border border-zinc-300 bg-white text-sm font-semibold text-zinc-700 hover:bg-zinc-50 transition-colors"
+                            className="px-4 py-2 rounded-lg border border-zinc-800 bg-white text-sm font-semibold text-zinc-800 hover:bg-zinc-800 hover:text-white transition-colors"
                         >
                             Reset
                         </button>
                         <button
-                            className="px-4 py-2 rounded-lg bg-zinc-900 text-white text-sm font-semibold flex items-center gap-2 hover:bg-black transition-colors"
+                            className="px-4 py-2 rounded-lg bg-zinc-800 text-white text-sm font-semibold flex items-center gap-2 hover:bg-zinc-700 transition-colors"
                         >
                             <Download className="w-4 h-4" />
                             Export CSV

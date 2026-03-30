@@ -44,16 +44,16 @@ const InterestsPage = () => {
         }
     };
 
+    const canContinue = selected.length >= 3;
+
     const handleContinue = () => {
+        if (!canContinue) return;
         localStorage.setItem('onboarding_interests', JSON.stringify(selected));
         navigate('/relationship-goals');
     };
 
     return (
         <div className="min-h-screen bg-white flex flex-col items-center py-6 px-4 font-sans max-w-[420px] mx-auto">
-            {/* Header Spacer if needed or just remove */}
-
-
             <div className="w-full flex flex-col items-center flex-1 mt-4">
                 {/* Titles */}
                 <h2 className="text-[32px] font-bold text-black mb-2 text-center font-sans tracking-tight">
@@ -73,7 +73,7 @@ const InterestsPage = () => {
                                 onClick={() => toggleInterest(interest.name)}
                                 className={`flex items-center space-x-3 h-[52px] px-4 rounded-[26px] transition-all shadow-sm border ${isSelected
                                     ? 'border-[#733FE0] bg-[#F9F7FF]'
-                                    : 'border-transparent bg-[#F9F7FF] shadow-md' // Slightly elevated white look as per screenshot
+                                    : 'border-transparent bg-[#F9F7FF] shadow-md'
                                     }`}
                             >
                                 <span className={`${isSelected ? 'text-[#733FE0]' : 'text-black'}`}>
@@ -89,10 +89,13 @@ const InterestsPage = () => {
 
                 {/* Footer */}
                 <div className="mt-auto w-full flex flex-col items-center pb-4">
-
                     <button
                         onClick={handleContinue}
-                        className="w-full bg-[#733FE0] text-white font-bold h-[58px] rounded-[30px] text-[16px] shadow-lg shadow-purple-100 active:scale-[0.98] transition-all"
+                        disabled={!canContinue}
+                        className={`w-full font-bold h-[58px] rounded-[30px] text-[16px] shadow-lg active:scale-[0.98] transition-all ${canContinue
+                            ? 'bg-[#733FE0] text-white shadow-purple-100'
+                            : 'bg-[#C4AFF0] text-white cursor-not-allowed shadow-none'
+                            }`}
                     >
                         Continue
                     </button>
